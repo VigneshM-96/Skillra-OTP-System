@@ -7,6 +7,7 @@ import smtplib
 import ssl
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+import resend
 
 import httpx
 
@@ -100,15 +101,25 @@ async def send_otp_sendgrid(to_email: str, otp: str) -> None:
         )
         resp.raise_for_status()
 
+async def send_otp_resend(to_email: str, otp: str) -> None:
+    expire_minutes = settings.otp_expire_seconds // 60
+    resend.api_key = settings.resend_api_key
+
+    resend.Emails.send({
+        "from": f"{settings.resend_from_name} <{settings.resend_from_email}>",
+        "to": [to_email],
+        "subject": "Your Verification Code",
+        "html": _build_html(otp, expire_minutes),
+        "text": _build_plain(otp, expire_minutes),
+    })
+
 
 # ── Unified entry point ────────────────────────────────────────────────────
 
 async def send_otp_email(to_email: str, otp: str) -> None:
-    """
-    Automatically picks SendGrid or SMTP based on USE_SENDGRID env var.
-    Raises on delivery failure — let the caller handle the HTTP response.
-    """
-    if settings.use_sendgrid:
+    if settings.use_resend:
+        await send_otp_resend(to_email, otp)
+    elif settings.use_sendgrid:
         await send_otp_sendgrid(to_email, otp)
     else:
         await send_otp_smtp(to_email, otp)

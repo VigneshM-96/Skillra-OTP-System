@@ -24,6 +24,12 @@ class Settings(BaseSettings):
     sendgrid_from_email: str = ""
     sendgrid_from_name: str = "MyApp"
 
+    # Resend
+    use_resend: bool = False
+    resend_api_key: str = ""
+    resend_from_email: str = ""
+    resend_from_name: str = "MyApp"
+
     # OTP behaviour
     otp_length: int = 6
     otp_expire_seconds: int = 300       # 5 min TTL in Redis
