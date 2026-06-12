@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, EmailStr
 import redis.asyncio as aioredis
 
-from otp import generate_and_store_otp, verify_otp, get_otp_status, VerifyResult
-from email_sender import send_otp_email
-from redis_client import get_redis
+from app.otp import generate_and_store_otp, verify_otp, get_otp_status, VerifyResult
+from app.email_sender import send_otp_email
+from app.redis_client import get_redis
 from app.config import get_settings
 
 router   = APIRouter(prefix="/otp", tags=["OTP"])
