@@ -5,7 +5,7 @@ import redis.asyncio as aioredis
 from otp import generate_and_store_otp, verify_otp, get_otp_status, VerifyResult
 from email_sender import send_otp_email
 from redis_client import get_redis
-from config import get_settings
+from app.config import get_settings
 
 router   = APIRouter(prefix="/otp", tags=["OTP"])
 settings = get_settings()

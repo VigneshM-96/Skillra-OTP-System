@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from routes import router
 from redis_client import get_redis, close_redis
-from config import get_settings
+from app.config import get_settings
 
 settings = get_settings()
 

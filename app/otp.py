@@ -14,7 +14,7 @@ from enum import Enum
 
 import redis.asyncio as aioredis
 
-from config import get_settings
+from app.config import get_settings
 
 settings = get_settings()
 
